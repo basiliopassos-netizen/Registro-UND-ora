@@ -71,7 +71,12 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Sustrato</label>
-                        <input type="text" x-model="formProduccion.sustrato" placeholder="Ej. Cerámico A" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <select x-model="formProduccion.sustrato" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione sustrato...</option>
+                            <template x-for="sustrato in listaSustratos" :key="sustrato">
+                                <option :value="sustrato" x-text="sustrato"></option>
+                            </template>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">N° de Línea</label>
@@ -126,7 +131,7 @@
                             <template x-for="(item, index) in registros.produccion" :key="index">
                                 <tr class="border-b hover:bg-gray-50">
                                     <td class="p-3" x-text="item.fecha"></td>
-                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.linea"></td>
                                     <td class="p-3" x-text="item.turno"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
@@ -159,7 +164,12 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Sustrato</label>
-                        <input type="text" x-model="formDecoracion.sustrato" placeholder="Ej. Esmalte B" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <select x-model="formDecoracion.sustrato" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione sustrato...</option>
+                            <template x-for="sustrato in listaSustratos" :key="sustrato">
+                                <option :value="sustrato" x-text="sustrato"></option>
+                            </template>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Equipo</label>
@@ -203,7 +213,7 @@
                             <template x-for="(item, index) in registros.decoracion" :key="index">
                                 <tr class="border-b hover:bg-gray-50">
                                     <td class="p-3" x-text="item.fecha"></td>
-                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.equipo"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
@@ -235,7 +245,12 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Sustrato</label>
-                        <input type="text" x-model="formCorte.sustrato" placeholder="Ej. Base C" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <select x-model="formCorte.sustrato" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione sustrato...</option>
+                            <template x-for="sustrato in listaSustratos" :key="sustrato">
+                                <option :value="sustrato" x-text="sustrato"></option>
+                            </template>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Equipo</label>
@@ -278,7 +293,7 @@
                             <template x-for="(item, index) in registros.corte" :key="index">
                                 <tr class="border-b hover:bg-gray-50">
                                     <td class="p-3" x-text="item.fecha"></td>
-                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.equipo"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
@@ -309,12 +324,17 @@
                         <input type="date" x-model="formCunas.fecha" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">N° de Cuña</label>
-                        <input type="text" x-model="formCunas.nroCuña" placeholder="Ej. CU-102" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <label class="block text-sm font-semibold mb-1">N° de Cuna</label>
+                        <input type="text" x-model="formCunas.nroCuna" placeholder="Ej. CU-102" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Sustrato</label>
-                        <input type="text" x-model="formCunas.sustrato" placeholder="Ej. Material D" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <select x-model="formCunas.sustrato" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione sustrato...</option>
+                            <template x-for="sustrato in listaSustratos" :key="sustrato">
+                                <option :value="sustrato" x-text="sustrato"></option>
+                            </template>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Cantidad</label>
@@ -339,7 +359,7 @@
                         <thead>
                             <tr class="bg-gray-100 border-b">
                                 <th class="p-3">Fecha</th>
-                                <th class="p-3">N° de Cuña</th>
+                                <th class="p-3">N° de Cuna</th>
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Cantidad</th>
                                 <th class="p-3 text-center">Acciones</th>
@@ -349,8 +369,8 @@
                             <template x-for="(item, index) in registros.cunas" :key="index">
                                 <tr class="border-b hover:bg-gray-50">
                                     <td class="p-3" x-text="item.fecha"></td>
-                                    <td class="p-3 font-semibold" x-text="item.nroCuña"></td>
-                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-semibold" x-text="item.nroCuna"></td>
+                                    <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('cunas', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -380,12 +400,27 @@
             return {
                 activeTab: 'produccion',
                 mensajeAlerta: '',
+
+                // Lista de sustratos ordenada alfabéticamente
+                listaSustratos: [
+                    'Alveo',
+                    'Anticato',
+                    'Apomazado',
+                    'Arenisca',
+                    'Bamboo',
+                    'Lineal',
+                    'Pausa',
+                    'Piano',
+                    'Prisma',
+                    'Roca',
+                    'Rústico'
+                ],
                 
                 // Formularios
                 formProduccion: { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' },
                 formDecoracion: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' },
                 formCorte: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' },
-                formCunas: { fecha: getFechaHoy(), nroCuña: '', sustrato: '', cantidad: '' },
+                formCunas: { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' },
 
                 // Índices para edición (-1 o null significa nuevo registro)
                 editIndex: { produccion: null, decoracion: null, corte: null, cunas: null },
@@ -460,7 +495,7 @@
                         this.mostrarAlerta('Registro de Cunas guardado con éxito.');
                     }
                     this.guardarLocal('cunas');
-                    this.formCunas = { fecha: getFechaHoy(), nroCuña: '', sustrato: '', cantidad: '' };
+                    this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' };
                 },
 
                 // --- EDICIÓN Y ELIMINACIÓN GENÉRICA ---
@@ -477,7 +512,7 @@
                     if (seccion === 'produccion') this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' };
                     if (seccion === 'decoracion') this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
                     if (seccion === 'corte') this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
-                    if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuña: '', sustrato: '', cantidad: '' };
+                    if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' };
                 },
 
                 eliminarRegistro(seccion, index) {
@@ -513,7 +548,7 @@
                     texto += "\n📦 *CUNAS:*\n";
                     if (this.registros.cunas.length === 0) texto += "Sin registros.\n";
                     this.registros.cunas.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Cuña: ${item.nroCuña} | Sustrato: ${item.sustrato} | Cant: ${item.cantidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Cuna: ${item.nroCuna} | Sustrato: ${item.sustrato} | Cant: ${item.cantidad}\n`;
                     });
 
                     // Copiar al portapapeles
