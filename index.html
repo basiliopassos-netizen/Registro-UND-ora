@@ -77,7 +77,7 @@
                         <i class="fa-solid fa-gears"></i>
                     </div>
                     <h3 class="text-base sm:text-lg font-bold text-slate-800">Producción</h3>
-                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Líneas, turnos y cantidades</p>
+                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Líneas, turnos y calidades</p>
                 </button>
 
                 <!-- Botón Decoración -->
@@ -153,6 +153,17 @@
                         <label class="block text-sm font-semibold mb-1">Cantidad</label>
                         <input type="number" x-model="formProduccion.cantidad" placeholder="Ej. 1500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
                     </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Calidad</label>
+                        <div class="flex gap-6 mt-2">
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formProduccion.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formProduccion.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
+                            </label>
+                        </div>
+                    </div>
                     <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
                             <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.produccion !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
@@ -176,6 +187,7 @@
                                 <th class="p-3">Línea</th>
                                 <th class="p-3">Turno</th>
                                 <th class="p-3">Cantidad</th>
+                                <th class="p-3">Calidad</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -187,6 +199,7 @@
                                     <td class="p-3 font-semibold" x-text="item.linea"></td>
                                     <td class="p-3" x-text="item.turno"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
+                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('produccion', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('produccion', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -194,7 +207,7 @@
                                 </tr>
                             </template>
                             <template x-if="registros.produccion.length === 0">
-                                <tr><td colspan="6" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                                <tr><td colspan="7" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
                             </template>
                         </tbody>
                     </table>
@@ -237,9 +250,8 @@
                         <input type="number" x-model="formDecoracion.cantidad" placeholder="Ej. 1200" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
                     </div>
                     
-                    <!-- CALIDADES: KO o R1 -->
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Calidades</label>
+                        <label class="block text-sm font-semibold mb-1">Calidad</label>
                         <div class="flex gap-6 mt-2">
                             <label class="flex items-center gap-2 cursor-pointer font-medium">
                                 <input type="radio" x-model="formDecoracion.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
@@ -272,7 +284,7 @@
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Equipo</th>
                                 <th class="p-3">Cantidad</th>
-                                <th class="p-3">Calidades</th>
+                                <th class="p-3">Calidad</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -332,6 +344,17 @@
                         <label class="block text-sm font-semibold mb-1">Cantidad</label>
                         <input type="number" x-model="formCorte.cantidad" placeholder="Ej. 800" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
                     </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Calidad</label>
+                        <div class="flex gap-6 mt-2">
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formCorte.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formCorte.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
+                            </label>
+                        </div>
+                    </div>
                     <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
                             <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.corte !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
@@ -354,6 +377,7 @@
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Equipo</th>
                                 <th class="p-3">Cantidad</th>
+                                <th class="p-3">Calidad</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -364,6 +388,7 @@
                                     <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.equipo"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
+                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('corte', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('corte', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -371,7 +396,7 @@
                                 </tr>
                             </template>
                             <template x-if="registros.corte.length === 0">
-                                <tr><td colspan="5" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                                <tr><td colspan="6" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
                             </template>
                         </tbody>
                     </table>
@@ -408,6 +433,17 @@
                         <label class="block text-sm font-semibold mb-1">Cantidad</label>
                         <input type="number" x-model="formCunas.cantidad" placeholder="Ej. 500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
                     </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Calidad</label>
+                        <div class="flex gap-6 mt-2">
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formCunas.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formCunas.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
+                            </label>
+                        </div>
+                    </div>
                     <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
                             <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.cunas !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
@@ -430,6 +466,7 @@
                                 <th class="p-3">N° de Cuna</th>
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Cantidad</th>
+                                <th class="p-3">Calidad</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -440,6 +477,7 @@
                                     <td class="p-3 font-semibold" x-text="item.nroCuna"></td>
                                     <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
+                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('cunas', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('cunas', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -447,7 +485,7 @@
                                 </tr>
                             </template>
                             <template x-if="registros.cunas.length === 0">
-                                <tr><td colspan="5" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                                <tr><td colspan="6" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
                             </template>
                         </tbody>
                     </table>
@@ -485,10 +523,10 @@
                 ],
                 
                 // Formularios
-                formProduccion: { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' },
+                formProduccion: { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '', calidad: '' },
                 formDecoracion: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' },
-                formCorte: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' },
-                formCunas: { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' },
+                formCorte: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' },
+                formCunas: { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '', calidad: '' },
 
                 // Índices para edición
                 editIndex: { produccion: null, decoracion: null, corte: null, cunas: null },
@@ -521,7 +559,7 @@
                         this.mostrarAlerta('Registro de Producción guardado con éxito.');
                     }
                     this.guardarLocal('produccion');
-                    this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' };
+                    this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '', calidad: '' };
                 },
 
                 // --- DECORACION ---
@@ -549,7 +587,7 @@
                         this.mostrarAlerta('Registro de Corte guardado con éxito.');
                     }
                     this.guardarLocal('corte');
-                    this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
+                    this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
                 },
 
                 // --- CUNAS ---
@@ -563,7 +601,7 @@
                         this.mostrarAlerta('Registro de Cunas guardado con éxito.');
                     }
                     this.guardarLocal('cunas');
-                    this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' };
+                    this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '', calidad: '' };
                 },
 
                 // --- EDICIÓN Y ELIMINACIÓN GENÉRICA ---
@@ -577,10 +615,10 @@
 
                 cancelarEdicion(seccion) {
                     this.editIndex[seccion] = null;
-                    if (seccion === 'produccion') this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' };
+                    if (seccion === 'produccion') this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '', calidad: '' };
                     if (seccion === 'decoracion') this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
-                    if (seccion === 'corte') this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
-                    if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' };
+                    if (seccion === 'corte') this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
+                    if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '', calidad: '' };
                 },
 
                 eliminarRegistro(seccion, index) {
@@ -598,7 +636,7 @@
                     texto += "⚙️ *PRODUCCIÓN:*\n";
                     if (this.registros.produccion.length === 0) texto += "Sin registros.\n";
                     this.registros.produccion.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Línea: ${item.linea} | Turno: ${item.turno} | Cant: ${item.cantidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Línea: ${item.linea} | Turno: ${item.turno} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
                     });
 
                     texto += "\n🎨 *DECORACIÓN:*\n";
@@ -610,13 +648,13 @@
                     texto += "\n✂️ *CORTE:*\n";
                     if (this.registros.corte.length === 0) texto += "Sin registros.\n";
                     this.registros.corte.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
                     });
 
                     texto += "\n📦 *CUNAS:*\n";
                     if (this.registros.cunas.length === 0) texto += "Sin registros.\n";
                     this.registros.cunas.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Cuna: ${item.nroCuna} | Sustrato: ${item.sustrato} | Cant: ${item.cantidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Cuna: ${item.nroCuna} | Sustrato: ${item.sustrato} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
                     });
 
                     // Copiar al portapapeles
