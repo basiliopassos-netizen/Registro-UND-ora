@@ -77,7 +77,7 @@
                         <i class="fa-solid fa-gears"></i>
                     </div>
                     <h3 class="text-base sm:text-lg font-bold text-slate-800">Producción</h3>
-                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Líneas, turnos y calidades</p>
+                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Líneas, turnos y cantidades</p>
                 </button>
 
                 <!-- Botón Decoración -->
@@ -86,7 +86,7 @@
                         <i class="fa-solid fa-paint-roller"></i>
                     </div>
                     <h3 class="text-base sm:text-lg font-bold text-slate-800">Decoración</h3>
-                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Equipos, KO y R1</p>
+                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Equipos, K.O. y R1</p>
                 </button>
 
                 <!-- Botón Corte -->
@@ -150,19 +150,12 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
-                        <input type="number" x-model="formProduccion.cantidad" placeholder="Ej. 1500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <label class="block text-sm font-semibold mb-1">Cantidad K.O.</label>
+                        <input type="number" x-model="formProduccion.cantKO" placeholder="Ej. 1000" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Calidad</label>
-                        <div class="flex gap-6 mt-2">
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formProduccion.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formProduccion.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
-                            </label>
-                        </div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad R1</label>
+                        <input type="number" x-model="formProduccion.cantR1" placeholder="Ej. 500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
@@ -186,8 +179,8 @@
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Línea</th>
                                 <th class="p-3">Turno</th>
-                                <th class="p-3">Cantidad</th>
-                                <th class="p-3">Calidad</th>
+                                <th class="p-3">Cant. K.O.</th>
+                                <th class="p-3">Cant. R1</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -198,8 +191,8 @@
                                     <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.linea"></td>
                                     <td class="p-3" x-text="item.turno"></td>
-                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
-                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantKO || 0"></td>
+                                    <td class="p-3 font-semibold text-indigo-600" x-text="item.cantR1 || 0"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('produccion', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('produccion', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -246,22 +239,13 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
-                        <input type="number" x-model="formDecoracion.cantidad" placeholder="Ej. 1200" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <label class="block text-sm font-semibold mb-1">Cantidad K.O.</label>
+                        <input type="number" x-model="formDecoracion.cantKO" placeholder="Ej. 1000" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
-                    
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Calidad</label>
-                        <div class="flex gap-6 mt-2">
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formDecoracion.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formDecoracion.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
-                            </label>
-                        </div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad R1</label>
+                        <input type="number" x-model="formDecoracion.cantR1" placeholder="Ej. 500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
-
                     <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
                             <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.decoracion !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
@@ -283,8 +267,8 @@
                                 <th class="p-3">Fecha</th>
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Equipo</th>
-                                <th class="p-3">Cantidad</th>
-                                <th class="p-3">Calidad</th>
+                                <th class="p-3">Cant. K.O.</th>
+                                <th class="p-3">Cant. R1</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -294,8 +278,8 @@
                                     <td class="p-3" x-text="item.fecha"></td>
                                     <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.equipo"></td>
-                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
-                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantKO || 0"></td>
+                                    <td class="p-3 font-semibold text-indigo-600" x-text="item.cantR1 || 0"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('decoracion', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('decoracion', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -341,19 +325,12 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
-                        <input type="number" x-model="formCorte.cantidad" placeholder="Ej. 800" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <label class="block text-sm font-semibold mb-1">Cantidad K.O.</label>
+                        <input type="number" x-model="formCorte.cantKO" placeholder="Ej. 800" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Calidad</label>
-                        <div class="flex gap-6 mt-2">
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formCorte.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formCorte.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
-                            </label>
-                        </div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad R1</label>
+                        <input type="number" x-model="formCorte.cantR1" placeholder="Ej. 200" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
@@ -376,8 +353,8 @@
                                 <th class="p-3">Fecha</th>
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Equipo</th>
-                                <th class="p-3">Cantidad</th>
-                                <th class="p-3">Calidad</th>
+                                <th class="p-3">Cant. K.O.</th>
+                                <th class="p-3">Cant. R1</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -387,8 +364,8 @@
                                     <td class="p-3" x-text="item.fecha"></td>
                                     <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.equipo"></td>
-                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
-                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantKO || 0"></td>
+                                    <td class="p-3 font-semibold text-indigo-600" x-text="item.cantR1 || 0"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('corte', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('corte', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -430,19 +407,12 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
-                        <input type="number" x-model="formCunas.cantidad" placeholder="Ej. 500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                        <label class="block text-sm font-semibold mb-1">Cantidad K.O.</label>
+                        <input type="number" x-model="formCunas.cantKO" placeholder="Ej. 500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Calidad</label>
-                        <div class="flex gap-6 mt-2">
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formCunas.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                <input type="radio" x-model="formCunas.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
-                            </label>
-                        </div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad R1</label>
+                        <input type="number" x-model="formCunas.cantR1" placeholder="Ej. 100" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
@@ -465,8 +435,8 @@
                                 <th class="p-3">Fecha</th>
                                 <th class="p-3">N° de Cuna</th>
                                 <th class="p-3">Sustrato</th>
-                                <th class="p-3">Cantidad</th>
-                                <th class="p-3">Calidad</th>
+                                <th class="p-3">Cant. K.O.</th>
+                                <th class="p-3">Cant. R1</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -476,8 +446,8 @@
                                     <td class="p-3" x-text="item.fecha"></td>
                                     <td class="p-3 font-semibold" x-text="item.nroCuna"></td>
                                     <td class="p-3 font-medium" x-text="item.sustrato"></td>
-                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
-                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantKO || 0"></td>
+                                    <td class="p-3 font-semibold text-indigo-600" x-text="item.cantR1 || 0"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('cunas', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('cunas', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -522,11 +492,11 @@
                     'Rústico'
                 ],
                 
-                // Formularios
-                formProduccion: { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '', calidad: '' },
-                formDecoracion: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' },
-                formCorte: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' },
-                formCunas: { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '', calidad: '' },
+                // Formularios con separación de K.O. y R1
+                formProduccion: { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantKO: '', cantR1: '' },
+                formDecoracion: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantKO: '', cantR1: '' },
+                formCorte: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantKO: '', cantR1: '' },
+                formCunas: { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantKO: '', cantR1: '' },
 
                 // Índices para edición
                 editIndex: { produccion: null, decoracion: null, corte: null, cunas: null },
@@ -559,7 +529,7 @@
                         this.mostrarAlerta('Registro de Producción guardado con éxito.');
                     }
                     this.guardarLocal('produccion');
-                    this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '', calidad: '' };
+                    this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantKO: '', cantR1: '' };
                 },
 
                 // --- DECORACION ---
@@ -573,7 +543,7 @@
                         this.mostrarAlerta('Registro de Decoración guardado con éxito.');
                     }
                     this.guardarLocal('decoracion');
-                    this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
+                    this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantKO: '', cantR1: '' };
                 },
 
                 // --- CORTE ---
@@ -587,7 +557,7 @@
                         this.mostrarAlerta('Registro de Corte guardado con éxito.');
                     }
                     this.guardarLocal('corte');
-                    this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
+                    this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantKO: '', cantR1: '' };
                 },
 
                 // --- CUNAS ---
@@ -601,7 +571,7 @@
                         this.mostrarAlerta('Registro de Cunas guardado con éxito.');
                     }
                     this.guardarLocal('cunas');
-                    this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '', calidad: '' };
+                    this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantKO: '', cantR1: '' };
                 },
 
                 // --- EDICIÓN Y ELIMINACIÓN GENÉRICA ---
@@ -615,10 +585,10 @@
 
                 cancelarEdicion(seccion) {
                     this.editIndex[seccion] = null;
-                    if (seccion === 'produccion') this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '', calidad: '' };
-                    if (seccion === 'decoracion') this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
-                    if (seccion === 'corte') this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
-                    if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '', calidad: '' };
+                    if (seccion === 'produccion') this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantKO: '', cantR1: '' };
+                    if (seccion === 'decoracion') this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantKO: '', cantR1: '' };
+                    if (seccion === 'corte') this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantKO: '', cantR1: '' };
+                    if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantKO: '', cantR1: '' };
                 },
 
                 eliminarRegistro(seccion, index) {
@@ -636,25 +606,25 @@
                     texto += "⚙️ *PRODUCCIÓN:*\n";
                     if (this.registros.produccion.length === 0) texto += "Sin registros.\n";
                     this.registros.produccion.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Línea: ${item.linea} | Turno: ${item.turno} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Línea: ${item.linea} | Turno: ${item.turno} | K.O.: ${item.cantKO || 0} | R1: ${item.cantR1 || 0}\n`;
                     });
 
                     texto += "\n🎨 *DECORACIÓN:*\n";
                     if (this.registros.decoracion.length === 0) texto += "Sin registros.\n";
                     this.registros.decoracion.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | K.O.: ${item.cantKO || 0} | R1: ${item.cantR1 || 0}\n`;
                     });
 
                     texto += "\n✂️ *CORTE:*\n";
                     if (this.registros.corte.length === 0) texto += "Sin registros.\n";
                     this.registros.corte.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | K.O.: ${item.cantKO || 0} | R1: ${item.cantR1 || 0}\n`;
                     });
 
                     texto += "\n📦 *CUNAS:*\n";
                     if (this.registros.cunas.length === 0) texto += "Sin registros.\n";
                     this.registros.cunas.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Cuna: ${item.nroCuna} | Sustrato: ${item.sustrato} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Cuna: ${item.nroCuna} | Sustrato: ${item.sustrato} | K.O.: ${item.cantKO || 0} | R1: ${item.cantR1 || 0}\n`;
                     });
 
                     // Copiar al portapapeles
