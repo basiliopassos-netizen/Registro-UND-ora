@@ -86,7 +86,7 @@
                         <i class="fa-solid fa-paint-roller"></i>
                     </div>
                     <h3 class="text-base sm:text-lg font-bold text-slate-800">Decoración</h3>
-                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Equipos, CAO y R1</p>
+                    <p class="text-gray-400 text-[10px] sm:text-xs hidden sm:block">Equipos, KO y R1</p>
                 </button>
 
                 <!-- Botón Corte -->
@@ -237,26 +237,15 @@
                         <input type="number" x-model="formDecoracion.cantidad" placeholder="Ej. 1200" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
                     </div>
                     
+                    <!-- CALIDADES: KO o R1 -->
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Casuística</label>
-                        <div class="flex gap-4 mt-2">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" x-model="formDecoracion.casuistica" value="CAO" class="w-4 h-4 text-blue-600" required> CAO
+                        <label class="block text-sm font-semibold mb-1">Calidades</label>
+                        <div class="flex gap-6 mt-2">
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formDecoracion.calidad" value="KO" class="w-4 h-4 text-blue-600" required> KO
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" x-model="formDecoracion.casuistica" value="Retroceso" class="w-4 h-4 text-blue-600"> Retroceso
-                            </label>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">Tipo R1 / CAO</label>
-                        <div class="flex gap-4 mt-2">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" x-model="formDecoracion.tipoR1" value="R1" class="w-4 h-4 text-blue-600" required> R1
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" x-model="formDecoracion.tipoR1" value="CAO" class="w-4 h-4 text-blue-600"> CAO
+                            <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                <input type="radio" x-model="formDecoracion.calidad" value="R1" class="w-4 h-4 text-blue-600"> R1
                             </label>
                         </div>
                     </div>
@@ -283,8 +272,7 @@
                                 <th class="p-3">Sustrato</th>
                                 <th class="p-3">Equipo</th>
                                 <th class="p-3">Cantidad</th>
-                                <th class="p-3">Casuística</th>
-                                <th class="p-3">R1/CAO</th>
+                                <th class="p-3">Calidades</th>
                                 <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -295,8 +283,7 @@
                                     <td class="p-3 font-medium" x-text="item.sustrato"></td>
                                     <td class="p-3 font-semibold" x-text="item.equipo"></td>
                                     <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
-                                    <td class="p-3" x-text="item.casuistica"></td>
-                                    <td class="p-3 font-semibold" x-text="item.tipoR1"></td>
+                                    <td class="p-3 font-semibold" x-text="item.calidad"></td>
                                     <td class="p-3 text-center flex justify-center gap-2">
                                         <button @click="editarRegistro('decoracion', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button @click="eliminarRegistro('decoracion', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -304,7 +291,7 @@
                                 </tr>
                             </template>
                             <template x-if="registros.decoracion.length === 0">
-                                <tr><td colspan="7" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                                <tr><td colspan="6" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
                             </template>
                         </tbody>
                     </table>
@@ -499,7 +486,7 @@
                 
                 // Formularios
                 formProduccion: { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' },
-                formDecoracion: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', casuistica: '', tipoR1: '' },
+                formDecoracion: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' },
                 formCorte: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' },
                 formCunas: { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' },
 
@@ -548,7 +535,7 @@
                         this.mostrarAlerta('Registro de Decoración guardado con éxito.');
                     }
                     this.guardarLocal('decoracion');
-                    this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', casuistica: '', tipoR1: '' };
+                    this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
                 },
 
                 // --- CORTE ---
@@ -591,7 +578,7 @@
                 cancelarEdicion(seccion) {
                     this.editIndex[seccion] = null;
                     if (seccion === 'produccion') this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' };
-                    if (seccion === 'decoracion') this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', casuistica: '', tipoR1: '' };
+                    if (seccion === 'decoracion') this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '', calidad: '' };
                     if (seccion === 'corte') this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
                     if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuna: '', sustrato: '', cantidad: '' };
                 },
@@ -617,7 +604,7 @@
                     texto += "\n🎨 *DECORACIÓN:*\n";
                     if (this.registros.decoracion.length === 0) texto += "Sin registros.\n";
                     this.registros.decoracion.forEach((item, i) => {
-                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad} | Casuística: ${item.casuistica} | R1/CAO: ${item.tipoR1}\n`;
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad} | Calidad: ${item.calidad}\n`;
                     });
 
                     texto += "\n✂️ *CORTE:*\n";
