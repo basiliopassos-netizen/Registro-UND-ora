@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Fábrica</title>
+    <!-- Tailwind CSS para un diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js para la reactividad de las pestañas y el CRUD -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800" x-data="fabricaApp()">
+
+    <!-- Header Principal -->
+    <header class="bg-slate-800 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-industry text-blue-400"></i> Control de Fábrica
+            </h1>
+            <div class="mt-3 sm:mt-0 flex gap-2">
+                <button @click="generarInformeWhatsApp()" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition shadow">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Copiar Informe WhatsApp
+                </button>
+                <button @click="exportarPDF()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition shadow">
+                    <i class="fa-solid fa-file-pdf text-lg"></i> Descargar PDF / Imprimir
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación por Pestañas -->
+    <nav class="bg-white shadow border-b">
+        <div class="max-w-7xl mx-auto flex overflow-x-auto">
+            <button @click="activeTab = 'produccion'" :class="activeTab === 'produccion' ? 'border-blue-600 text-blue-600 font-bold bg-blue-50/50' : 'border-transparent text-gray-500 hover:text-gray-700'" class="flex-1 min-w-[120px] py-4 px-6 text-center border-b-2 font-medium text-sm transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-gears"></i> Producción
+            </button>
+            <button @click="activeTab = 'decoracion'" :class="activeTab === 'decoracion' ? 'border-blue-600 text-blue-600 font-bold bg-blue-50/50' : 'border-transparent text-gray-500 hover:text-gray-700'" class="flex-1 min-w-[120px] py-4 px-6 text-center border-b-2 font-medium text-sm transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-paint-roller"></i> Decoración
+            </button>
+            <button @click="activeTab = 'corte'" :class="activeTab === 'corte' ? 'border-blue-600 text-blue-600 font-bold bg-blue-50/50' : 'border-transparent text-gray-500 hover:text-gray-700'" class="flex-1 min-w-[120px] py-4 px-6 text-center border-b-2 font-medium text-sm transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-scissors"></i> Corte
+            </button>
+            <button @click="activeTab = 'cunas'" :class="activeTab === 'cunas' ? 'border-blue-600 text-blue-600 font-bold bg-blue-50/50' : 'border-transparent text-gray-500 hover:text-gray-700'" class="flex-1 min-w-[120px] py-4 px-6 text-center border-b-2 font-medium text-sm transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-box-archive"></i> Cunas
+            </button>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+
+        <!-- NOTIFICACIÓN FLOTANTE -->
+        <div x-show="mensajeAlerta" x-transition class="mb-4 p-4 rounded-lg bg-green-100 border border-green-400 text-green-700 flex justify-between items-center">
+            <span x-text="mensajeAlerta"></span>
+            <button @click="mensajeAlerta = ''" class="text-green-900 font-bold">&times;</button>
+        </div>
+
+        <!-- ================= PESTAÑA: PRODUCCIÓN ================= -->
+        <div x-show="activeTab === 'produccion'" class="space-y-6">
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-blue-600"></i> 
+                    <span x-text="editIndex.produccion !== null ? 'Modificar Registro de Producción' : 'Nuevo Registro de Producción'"></span>
+                </h2>
+                <form @submit.prevent="guardarProduccion" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Fecha</label>
+                        <input type="date" x-model="formProduccion.fecha" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Sustrato</label>
+                        <input type="text" x-model="formProduccion.sustrato" placeholder="Ej. Cerámico A" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">N° de Línea</label>
+                        <select x-model="formProduccion.linea" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione...</option>
+                            <option value="L1">L1</option>
+                            <option value="L2">L2</option>
+                            <option value="L3">L3</option>
+                            <option value="L4">L4</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Turno</label>
+                        <select x-model="formProduccion.turno" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Tarde">Tarde</option>
+                            <option value="Noche">Noche</option>
+                            <option value="Mañana">Mañana</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
+                        <input type="number" x-model="formProduccion.cantidad" placeholder="Ej. 1500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.produccion !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
+                        </button>
+                        <template x-if="editIndex.produccion !== null">
+                            <button type="button" @click="cancelarEdicion('produccion')" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold px-4 py-2 rounded-lg transition">Cancelar</button>
+                        </template>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabla de Registros -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h3 class="text-md font-bold text-slate-800 mb-4">Registros Guardados - Producción</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="p-3">Fecha</th>
+                                <th class="p-3">Sustrato</th>
+                                <th class="p-3">Línea</th>
+                                <th class="p-3">Turno</th>
+                                <th class="p-3">Cantidad</th>
+                                <th class="p-3 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(item, index) in registros.produccion" :key="index">
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="p-3" x-text="item.fecha"></td>
+                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-semibold" x-text="item.linea"></td>
+                                    <td class="p-3" x-text="item.turno"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
+                                    <td class="p-3 text-center flex justify-center gap-2">
+                                        <button @click="editarRegistro('produccion', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button @click="eliminarRegistro('produccion', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template x-if="registros.produccion.length === 0">
+                                <tr><td colspan="6" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PESTAÑA: DECORACIÓN ================= -->
+        <div x-show="activeTab === 'decoracion'" class="space-y-6" style="display: none;">
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-blue-600"></i>
+                    <span x-text="editIndex.decoracion !== null ? 'Modificar Registro de Decoración' : 'Nuevo Registro de Decoración'"></span>
+                </h2>
+                <form @submit.prevent="guardarDecoracion" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Fecha</label>
+                        <input type="date" x-model="formDecoracion.fecha" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Sustrato</label>
+                        <input type="text" x-model="formDecoracion.sustrato" placeholder="Ej. Esmalte B" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Equipo</label>
+                        <select x-model="formDecoracion.equipo" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione...</option>
+                            <option value="D1">D1</option>
+                            <option value="D2">D2</option>
+                            <option value="Tono I+D">Tono I+D</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
+                        <input type="number" x-model="formDecoracion.cantidad" placeholder="Ej. 1200" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.decoracion !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
+                        </button>
+                        <template x-if="editIndex.decoracion !== null">
+                            <button type="button" @click="cancelarEdicion('decoracion')" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold px-4 py-2 rounded-lg transition">Cancelar</button>
+                        </template>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabla Decoración -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h3 class="text-md font-bold text-slate-800 mb-4">Registros Guardados - Decoración</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="p-3">Fecha</th>
+                                <th class="p-3">Sustrato</th>
+                                <th class="p-3">Equipo</th>
+                                <th class="p-3">Cantidad</th>
+                                <th class="p-3 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(item, index) in registros.decoracion" :key="index">
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="p-3" x-text="item.fecha"></td>
+                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-semibold" x-text="item.equipo"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
+                                    <td class="p-3 text-center flex justify-center gap-2">
+                                        <button @click="editarRegistro('decoracion', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button @click="eliminarRegistro('decoracion', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template x-if="registros.decoracion.length === 0">
+                                <tr><td colspan="5" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PESTAÑA: CORTE ================= -->
+        <div x-show="activeTab === 'corte'" class="space-y-6" style="display: none;">
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-blue-600"></i>
+                    <span x-text="editIndex.corte !== null ? 'Modificar Registro de Corte' : 'Nuevo Registro de Corte'"></span>
+                </h2>
+                <form @submit.prevent="guardarCorte" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Fecha</label>
+                        <input type="date" x-model="formCorte.fecha" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Sustrato</label>
+                        <input type="text" x-model="formCorte.sustrato" placeholder="Ej. Base C" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Equipo</label>
+                        <select x-model="formCorte.equipo" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                            <option value="">Seleccione...</option>
+                            <option value="C1">C1</option>
+                            <option value="C2">C2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
+                        <input type="number" x-model="formCorte.cantidad" placeholder="Ej. 800" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.corte !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
+                        </button>
+                        <template x-if="editIndex.corte !== null">
+                            <button type="button" @click="cancelarEdicion('corte')" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold px-4 py-2 rounded-lg transition">Cancelar</button>
+                        </template>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabla Corte -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h3 class="text-md font-bold text-slate-800 mb-4">Registros Guardados - Corte</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="p-3">Fecha</th>
+                                <th class="p-3">Sustrato</th>
+                                <th class="p-3">Equipo</th>
+                                <th class="p-3">Cantidad</th>
+                                <th class="p-3 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(item, index) in registros.corte" :key="index">
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="p-3" x-text="item.fecha"></td>
+                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-semibold" x-text="item.equipo"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
+                                    <td class="p-3 text-center flex justify-center gap-2">
+                                        <button @click="editarRegistro('corte', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button @click="eliminarRegistro('corte', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template x-if="registros.corte.length === 0">
+                                <tr><td colspan="5" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PESTAÑA: CUNAS ================= -->
+        <div x-show="activeTab === 'cunas'" class="space-y-6" style="display: none;">
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-blue-600"></i>
+                    <span x-text="editIndex.cunas !== null ? 'Modificar Registro de Cunas' : 'Nuevo Registro de Cunas'"></span>
+                </h2>
+                <form @submit.prevent="guardarCunas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Fecha</label>
+                        <input type="date" x-model="formCunas.fecha" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">N° de Cuña</label>
+                        <input type="text" x-model="formCunas.nroCuña" placeholder="Ej. CU-102" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Sustrato</label>
+                        <input type="text" x-model="formCunas.sustrato" placeholder="Ej. Material D" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Cantidad</label>
+                        <input type="number" x-model="formCunas.cantidad" placeholder="Ej. 500" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 flex gap-2 pt-2">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> <span x-text="editIndex.cunas !== null ? 'Actualizar Registro' : 'Guardar Registro'"></span>
+                        </button>
+                        <template x-if="editIndex.cunas !== null">
+                            <button type="button" @click="cancelarEdicion('cunas')" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold px-4 py-2 rounded-lg transition">Cancelar</button>
+                        </template>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabla Cunas -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h3 class="text-md font-bold text-slate-800 mb-4">Registros Guardados - Cunas</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="p-3">Fecha</th>
+                                <th class="p-3">N° de Cuña</th>
+                                <th class="p-3">Sustrato</th>
+                                <th class="p-3">Cantidad</th>
+                                <th class="p-3 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(item, index) in registros.cunas" :key="index">
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="p-3" x-text="item.fecha"></td>
+                                    <td class="p-3 font-semibold" x-text="item.nroCuña"></td>
+                                    <td class="p-3" x-text="item.sustrato"></td>
+                                    <td class="p-3 font-semibold text-blue-600" x-text="item.cantidad"></td>
+                                    <td class="p-3 text-center flex justify-center gap-2">
+                                        <button @click="editarRegistro('cunas', index)" class="text-amber-600 hover:text-amber-800 p-1" title="Modificar"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button @click="eliminarRegistro('cunas', index)" class="text-red-600 hover:text-red-800 p-1" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template x-if="registros.cunas.length === 0">
+                                <tr><td colspan="5" class="p-4 text-center text-gray-400">No hay registros guardados todavía.</td></tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script de Lógica con Alpine.js y localStorage -->
+    <script>
+        function getFechaHoy() {
+            const hoy = new Date();
+            return hoy.toISOString().split('T')[0];
+        }
+
+        function fabricaApp() {
+            return {
+                activeTab: 'produccion',
+                mensajeAlerta: '',
+                
+                // Formularios
+                formProduccion: { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' },
+                formDecoracion: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' },
+                formCorte: { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' },
+                formCunas: { fecha: getFechaHoy(), nroCuña: '', sustrato: '', cantidad: '' },
+
+                // Índices para edición (-1 o null significa nuevo registro)
+                editIndex: { produccion: null, decoracion: null, corte: null, cunas: null },
+
+                // Datos cargados desde localStorage o vacíos
+                registros: {
+                    produccion: JSON.parse(localStorage.getItem('fabrica_produccion')) || [],
+                    decoracion: JSON.parse(localStorage.getItem('fabrica_decoracion')) || [],
+                    corte: JSON.parse(localStorage.getItem('fabrica_corte')) || [],
+                    cunas: JSON.parse(localStorage.getItem('fabrica_cunas')) || []
+                },
+
+                mostrarAlerta(texto) {
+                    this.mensajeAlerta = texto;
+                    setTimeout(() => { this.mensajeAlerta = ''; }, 4000);
+                },
+
+                guardarLocal(seccion) {
+                    localStorage.setItem('fabrica_' + seccion, JSON.stringify(this.registros[seccion]));
+                },
+
+                // --- PRODUCCION ---
+                guardarProduccion() {
+                    if (this.editIndex.produccion !== null) {
+                        this.registros.produccion[this.editIndex.produccion] = { ...this.formProduccion };
+                        this.editIndex.produccion = null;
+                        this.mostrarAlerta('Registro de Producción actualizado correctamente.');
+                    } else {
+                        this.registros.produccion.push({ ...this.formProduccion });
+                        this.mostrarAlerta('Registro de Producción guardado con éxito.');
+                    }
+                    this.guardarLocal('produccion');
+                    this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' };
+                },
+
+                // --- DECORACION ---
+                guardarDecoracion() {
+                    if (this.editIndex.decoracion !== null) {
+                        this.registros.decoracion[this.editIndex.decoracion] = { ...this.formDecoracion };
+                        this.editIndex.decoracion = null;
+                        this.mostrarAlerta('Registro de Decoración actualizado correctamente.');
+                    } else {
+                        this.registros.decoracion.push({ ...this.formDecoracion });
+                        this.mostrarAlerta('Registro de Decoración guardado con éxito.');
+                    }
+                    this.guardarLocal('decoracion');
+                    this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
+                },
+
+                // --- CORTE ---
+                guardarCorte() {
+                    if (this.editIndex.corte !== null) {
+                        this.registros.corte[this.editIndex.corte] = { ...this.formCorte };
+                        this.editIndex.corte = null;
+                        this.mostrarAlerta('Registro de Corte actualizado correctamente.');
+                    } else {
+                        this.registros.corte.push({ ...this.formCorte });
+                        this.mostrarAlerta('Registro de Corte guardado con éxito.');
+                    }
+                    this.guardarLocal('corte');
+                    this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
+                },
+
+                // --- CUNAS ---
+                guardarCunas() {
+                    if (this.editIndex.cunas !== null) {
+                        this.registros.cunas[this.editIndex.cunas] = { ...this.formCunas };
+                        this.editIndex.cunas = null;
+                        this.mostrarAlerta('Registro de Cunas actualizado correctamente.');
+                    } else {
+                        this.registros.cunas.push({ ...this.formCunas });
+                        this.mostrarAlerta('Registro de Cunas guardado con éxito.');
+                    }
+                    this.guardarLocal('cunas');
+                    this.formCunas = { fecha: getFechaHoy(), nroCuña: '', sustrato: '', cantidad: '' };
+                },
+
+                // --- EDICIÓN Y ELIMINACIÓN GENÉRICA ---
+                editarRegistro(seccion, index) {
+                    this.editIndex[seccion] = index;
+                    if (seccion === 'produccion') this.formProduccion = { ...this.registros.produccion[index] };
+                    if (seccion === 'decoracion') this.formDecoracion = { ...this.registros.decoracion[index] };
+                    if (seccion === 'corte') this.formCorte = { ...this.registros.corte[index] };
+                    if (seccion === 'cunas') this.formCunas = { ...this.registros.cunas[index] };
+                },
+
+                cancelarEdicion(seccion) {
+                    this.editIndex[seccion] = null;
+                    if (seccion === 'produccion') this.formProduccion = { fecha: getFechaHoy(), sustrato: '', linea: '', turno: '', cantidad: '' };
+                    if (seccion === 'decoracion') this.formDecoracion = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
+                    if (seccion === 'corte') this.formCorte = { fecha: getFechaHoy(), sustrato: '', equipo: '', cantidad: '' };
+                    if (seccion === 'cunas') this.formCunas = { fecha: getFechaHoy(), nroCuña: '', sustrato: '', cantidad: '' };
+                },
+
+                eliminarRegistro(seccion, index) {
+                    if (confirm('¿Estás seguro de eliminar este registro?')) {
+                        this.registros[seccion].splice(index, 1);
+                        this.guardarLocal(seccion);
+                        this.mostrarAlerta('Registro eliminado.');
+                    }
+                },
+
+                // --- GENERAR INFORME WHATSAPP ---
+                generarInformeWhatsApp() {
+                    let texto = "📊 *INFORME DE FÁBRICA* 📊\n\n";
+                    
+                    texto += "⚙️ *PRODUCCIÓN:*\n";
+                    if (this.registros.produccion.length === 0) texto += "Sin registros.\n";
+                    this.registros.produccion.forEach((item, i) => {
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Línea: ${item.linea} | Turno: ${item.turno} | Cant: ${item.cantidad}\n`;
+                    });
+
+                    texto += "\n🎨 *DECORACIÓN:*\n";
+                    if (this.registros.decoracion.length === 0) texto += "Sin registros.\n";
+                    this.registros.decoracion.forEach((item, i) => {
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad}\n`;
+                    });
+
+                    texto += "\n✂️ *CORTE:*\n";
+                    if (this.registros.corte.length === 0) texto += "Sin registros.\n";
+                    this.registros.corte.forEach((item, i) => {
+                        texto += `${i+1}. Fecha: ${item.fecha} | Sustrato: ${item.sustrato} | Equipo: ${item.equipo} | Cant: ${item.cantidad}\n`;
+                    });
+
+                    texto += "\n📦 *CUNAS:*\n";
+                    if (this.registros.cunas.length === 0) texto += "Sin registros.\n";
+                    this.registros.cunas.forEach((item, i) => {
+                        texto += `${i+1}. Fecha: ${item.fecha} | Cuña: ${item.nroCuña} | Sustrato: ${item.sustrato} | Cant: ${item.cantidad}\n`;
+                    });
+
+                    // Copiar al portapapeles
+                    navigator.clipboard.writeText(texto).then(() => {
+                        alert('¡Informe copiado al portapapeles! Ya puedes pegarlo directamente en WhatsApp.');
+                    }).catch(err => {
+                        console.error('Error al copiar: ', err);
+                    });
+                },
+
+                // --- EXPORTAR PDF ---
+                exportarPDF() {
+                    window.print();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
